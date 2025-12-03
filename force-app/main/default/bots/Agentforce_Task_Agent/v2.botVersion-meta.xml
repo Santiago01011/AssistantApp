@@ -1,0 +1,127 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<BotVersion xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>v2</fullName>
+    <articleAnswersGPTEnabled>false</articleAnswersGPTEnabled>
+    <botDialogs>
+        <botSteps>
+            <botMessages>
+                <message>Hi, I&apos;m an AI service assistant. How can I help you?</message>
+                <messageIdentifier>aed8275f-e849-4953-b613-3c950b5e01fb</messageIdentifier>
+            </botMessages>
+            <stepIdentifier>3da4c85f-ccd5-42eb-8926-9c0ff42beb80</stepIdentifier>
+            <type>Message</type>
+        </botSteps>
+        <botSteps>
+            <stepIdentifier>40eecb7b-77d2-46c3-97b2-2add4f45e808</stepIdentifier>
+            <type>Wait</type>
+        </botSteps>
+        <developerName>Welcome</developerName>
+        <isPlaceholderDialog>false</isPlaceholderDialog>
+        <label>Hi! I&apos;m your helpful bot.</label>
+        <showInFooterMenu>false</showInFooterMenu>
+    </botDialogs>
+    <botDialogs>
+        <botSteps>
+            <botMessages>
+                <message>Sorry, it looks like something has gone wrong.</message>
+                <messageIdentifier>9c4d4ed6-9b88-4d26-b4df-968f9890cc21</messageIdentifier>
+            </botMessages>
+            <stepIdentifier>f4440070-d445-41ac-a54d-1a739bd93a58</stepIdentifier>
+            <type>Message</type>
+        </botSteps>
+        <botSteps>
+            <stepIdentifier>61c82584-8861-4895-8972-be98b16d9232</stepIdentifier>
+            <type>Wait</type>
+        </botSteps>
+        <developerName>Error_Handling</developerName>
+        <isPlaceholderDialog>false</isPlaceholderDialog>
+        <label>Unfortunately, a system error occurred. Let us start again.</label>
+        <showInFooterMenu>false</showInFooterMenu>
+    </botDialogs>
+    <botDialogs>
+        <botSteps>
+            <botMessages>
+                <message>One moment while I connect you to the next available service representative.</message>
+                <messageIdentifier>0161f591-0117-4917-99b8-a8e42fa29c60</messageIdentifier>
+            </botMessages>
+            <stepIdentifier>54dad497-b3a4-4ba7-9f0a-1e3b1fb684c2</stepIdentifier>
+            <type>Message</type>
+        </botSteps>
+        <botSteps>
+            <conversationSystemMessage>
+                <type>Transfer</type>
+            </conversationSystemMessage>
+            <stepIdentifier>e21cbf88-ccab-428e-a7ca-a7c02298d969</stepIdentifier>
+            <type>SystemMessage</type>
+        </botSteps>
+        <developerName>Transfer_To_Agent</developerName>
+        <isPlaceholderDialog>false</isPlaceholderDialog>
+        <label>Transfer To Agent</label>
+        <showInFooterMenu>false</showInFooterMenu>
+    </botDialogs>
+    <citationsEnabled>false</citationsEnabled>
+    <company>Private Executive Office</company>
+    <conversationDefinitionPlanners>
+        <genAiPlannerName>Agentforce_Task_Agent</genAiPlannerName>
+    </conversationDefinitionPlanners>
+    <conversationVariables>
+        <dataType>Text</dataType>
+        <description>This variable may also be referred to as VerifiedCustomerId</description>
+        <developerName>VerifiedCustomerId</developerName>
+        <includeInPrompt>false</includeInPrompt>
+        <label>VerifiedCustomerId</label>
+        <visibility>Internal</visibility>
+    </conversationVariables>
+    <conversationVariables>
+        <dataType>Text</dataType>
+        <description>Stores the customer ID type, whether it&apos;s a Salesforce user or a contact.</description>
+        <developerName>customerType</developerName>
+        <includeInPrompt>false</includeInPrompt>
+        <label>customerType</label>
+        <visibility>Internal</visibility>
+    </conversationVariables>
+    <conversationVariables>
+        <dataType>Boolean</dataType>
+        <description>Stores a boolean value that indicates whether the customer code is verified.</description>
+        <developerName>isVerified</developerName>
+        <includeInPrompt>false</includeInPrompt>
+        <label>isVerified</label>
+        <visibility>Internal</visibility>
+    </conversationVariables>
+    <conversationVariables>
+        <dataType>Text</dataType>
+        <description>Stores the Salesforce user ID or contact ID.</description>
+        <developerName>customerId</developerName>
+        <includeInPrompt>false</includeInPrompt>
+        <label>customerId</label>
+        <visibility>Internal</visibility>
+    </conversationVariables>
+    <conversationVariables>
+        <dataType>Text</dataType>
+        <description>Stores the authentication key that&apos;s used to generate the verification code.</description>
+        <developerName>authenticationKey</developerName>
+        <includeInPrompt>false</includeInPrompt>
+        <label>authenticationKey</label>
+        <visibility>Internal</visibility>
+    </conversationVariables>
+    <entryDialog>Welcome</entryDialog>
+    <intentDisambiguationEnabled>false</intentDisambiguationEnabled>
+    <intentV3Enabled>false</intentV3Enabled>
+    <knowledgeActionEnabled>false</knowledgeActionEnabled>
+    <knowledgeFallbackEnabled>false</knowledgeFallbackEnabled>
+    <role>Personal Executive Assistant (PAB) - Chief of Staff. You are an expert task management AI. Your job is to understand what the user wants and route to the right action: Find_Assistant_Tasks (show/check/review existing tasks), Create_Assistant_Task (add/remember new tasks), Update_Assistant_Task (mark complete/reschedule/change status), or Delete_Assistant_Task (remove tasks). 
+
+CRITICAL: Read the user message carefully and identify the core intent FIRST:
+- Does the user want to SEE/CHECK/REVIEW/LIST tasks? (words: what, show, list, check, tell, see, do I have, am I busy, today, tomorrow, upcoming, schedule, what should) → Find_Assistant_Tasks
+- Does the user want to ADD/CREATE/REMEMBER a task? (words: add, create, remind, don&apos;t forget, need to, should, put on list, call, email, meeting) → Create_Assistant_Task
+- Does the user want to MARK/UPDATE/CHANGE a task? (words: mark, done, complete, update, change, move, reschedule, defer, start, in progress) → Update_Assistant_Task
+- Does the user want to DELETE/REMOVE a task? (words: delete, remove, get rid of, cancel, drop) → Delete_Assistant_Task
+
+Be conversational but direct. When creating tasks, infer due dates from context (today, tomorrow, next Monday, in 3 days). Use contexts: @Home, @Work, @Errands, @Computer, @Anywhere. If info is missing, ask ONE question max.</role>
+    <smallTalkEnabled>false</smallTalkEnabled>
+    <staticPromptsEnabled>false</staticPromptsEnabled>
+    <stopRecPrompts>false</stopRecPrompts>
+    <stopWelcomePrompts>false</stopWelcomePrompts>
+    <surfacesEnabled>false</surfacesEnabled>
+    <toneType>Casual</toneType>
+</BotVersion>
