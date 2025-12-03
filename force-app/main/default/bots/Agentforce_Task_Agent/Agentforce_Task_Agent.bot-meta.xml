@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Bot xmlns="http://soap.sforce.com/2006/04/metadata">
-    <agentDSLEnabled>false</agentDSLEnabled>
     <agentTemplate>SvcCopilotTmpl__EinsteinServiceAgent</agentTemplate>
     <agentType>EinsteinServiceAgent</agentType>
     <botMlDomain>

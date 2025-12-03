@@ -1,0 +1,14 @@
+<template>
+    <div class="summary-card">
+        <div class="summary-top">
+            <div class="summary-title">{title}</div>
+            <div class="summary-sub">{summary}</div>
+        </div>
+        <div class="summary-progress">
+            <c-progress-bar value={percentComplete} height="12px"></c-progress-bar>
+        </div>
+        <div class="summary-foot">
+            <div class="summary-percent">{percentComplete}%</div>
+        </div>
+    </div>
+</template>

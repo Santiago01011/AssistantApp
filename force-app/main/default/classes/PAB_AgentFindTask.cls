@@ -1,58 +1,56 @@
 global with sharing class PAB_AgentFindTask {
 
-    global class TaskCardWrapper {
-        @InvocableVariable @AuraEnabled global String taskId;
-        @InvocableVariable @AuraEnabled global String subject;
-        @InvocableVariable @AuraEnabled global String status;
-        @InvocableVariable @AuraEnabled global String dueDate;
-        @InvocableVariable @AuraEnabled global String context;
-        @InvocableVariable @AuraEnabled global String description;
-
-        global TaskCardWrapper(PAB_Task__c t) {
-            this.taskId = t.Id;
-            this.subject = t.Name;
-            this.status = t.Status__c;
-            this.dueDate = String.valueOf(t.Due_Date__c);
-            this.context = t.Context__c;
-            this.description = t.Description__c;
-        }
-    }
-
     global class Request {
-        @InvocableVariable public String status;
-        @InvocableVariable public String keyword;
-        @InvocableVariable public Boolean debug;
+        @InvocableVariable @AuraEnabled public String keyword;
+        @InvocableVariable @AuraEnabled public String status;
     }
 
-    global class TaskCardResults {
-        @InvocableVariable @AuraEnabled public List<TaskCardWrapper> tasks;
-
-        global TaskCardResults(List<TaskCardWrapper> tasks) {
-            this.tasks = tasks;
-        }
+    global class TaskCardWrapper {
+        @InvocableVariable @AuraEnabled public String Id;
+        @InvocableVariable @AuraEnabled public String Name;
+        @InvocableVariable @AuraEnabled public String Description_c;
+        @InvocableVariable @AuraEnabled public String Status_c;
+        @InvocableVariable @AuraEnabled public String Due_Date_c;
+        @InvocableVariable @AuraEnabled public String Context_c;
     }
 
-    @InvocableMethod(label='Find Assistant Tasks' description='Returns task wrapper objects for card rendering')
-    global static List<TaskCardResults> execute(List<Request> requests) {
-        List<TaskCardResults> results = new List<TaskCardResults>();
+    @InvocableMethod(label='Find Assistant Tasks')
+    global static List<List<TaskCardWrapper>> execute(List<Request> requests) {
+
+        List<List<TaskCardWrapper>> resultsList = new List<List<TaskCardWrapper>>();
 
         for (Request req : requests) {
-            // Retrieve tasks for the request
-            List<PAB_Task__c> tasks = PAB_AgentService.findTasks(req.status, req.keyword);
-            // Debug path: return a deterministic set if the request asks for it
-            if (req.debug == true) {
-                List<TaskCardWrapper> debugWrappers = new List<TaskCardWrapper>();
-                debugWrappers.add(new TaskCardWrapper(new PAB_Task__c(Id='a00cf00000B7JkNAAV', Name='Debug Meeting', Status__c='New', Due_Date__c=Datetime.newInstance(2025,12,1,18,15,0), Description__c='Debug sample meeting', Context__c='@Work')));
-                debugWrappers.add(new TaskCardWrapper(new PAB_Task__c(Id='a00cf00000B7XQjAAN', Name='Debug Dinner', Status__c='New', Due_Date__c=Datetime.newInstance(2025,12,1,20,0,0), Description__c='Debug sample dinner', Context__c='@Home')));
-                results.add(new TaskCardResults(debugWrappers));
-                continue;
+
+            List<TaskCardWrapper> taskList = new List<TaskCardWrapper>();
+
+            String query = 'SELECT Id, Name, Description__c, Status__c, Due_Date__c, Context__c FROM PAB_Task__c WHERE 1=1';
+
+            if (String.isNotEmpty(req.status)) {
+                query += ' AND Status__c = \'' + String.escapeSingleQuotes(req.status) + '\'';
             }
-            List<TaskCardWrapper> wrappers = new List<TaskCardWrapper>();
+
+            if (String.isNotEmpty(req.keyword)) {
+                query += ' AND Name LIKE \'%' + String.escapeSingleQuotes(req.keyword) + '%\'';
+            }
+
+            query += ' LIMIT 50';
+
+            List<PAB_Task__c> tasks = Database.query(query);
+
             for (PAB_Task__c t : tasks) {
-                wrappers.add(new TaskCardWrapper(t));
+                TaskCardWrapper wrapper = new TaskCardWrapper();
+                wrapper.Id = t.Id;
+                wrapper.Name = t.Name;
+                wrapper.Description_c = t.Description__c;
+                wrapper.Status_c = t.Status__c;
+                wrapper.Due_Date_c = (t.Due_Date__c != null ? String.valueOf(t.Due_Date__c) : null);
+                wrapper.Context_c = t.Context__c;
+                taskList.add(wrapper);
             }
-            results.add(new TaskCardResults(wrappers));
+
+            resultsList.add(taskList);
         }
-        return results;
+
+        return resultsList;
     }
 }

@@ -1,0 +1,14 @@
+<template>
+    <div class="ihd-card" role="group">
+        <div class="ihd-card-top">
+            <slot name="icon">
+                <lightning-icon icon-name={iconName} alternative-text="" size="small" class="ihd-icon"></lightning-icon>
+            </slot>
+            <div class="ihd-label">{label}</div>
+        </div>
+        <div class="ihd-value" data-value>{displayValue}</div>
+        <template if:true={hasDelta}>
+            <div class="ihd-delta" title={deltaTitle}>{deltaText}</div>
+        </template>
+    </div>
+</template>

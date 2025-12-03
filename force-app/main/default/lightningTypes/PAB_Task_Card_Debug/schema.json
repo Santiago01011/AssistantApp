@@ -1,0 +1,5 @@
+{
+  "title" : "Debug Task Card",
+  "description" : "A debug CLT for the Task Card to inspect payloads",
+  "lightning:type" : "@apexClassType/c__PAB_AgentFindTask$TaskCardWrapper"
+}

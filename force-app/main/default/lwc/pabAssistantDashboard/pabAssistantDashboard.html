@@ -1,0 +1,69 @@
+<template>
+    <div class="dashboard-container">
+        <!-- Header with title -->
+        <div class="dashboard-header">
+            <h1>Task Manager</h1>
+        </div>
+
+        <!-- Stats Row (using ihdStatsCard + summary card) -->
+        <div class="stats-grid slds-m-bottom_medium">
+            <c-ihd-stats-card label="Total Tasks" value={totalTasks} icon-name="utility:task"></c-ihd-stats-card>
+            <c-ihd-stats-card label="Today" value={todayCount} icon-name="utility:event"></c-ihd-stats-card>
+            <c-ihd-stats-card label="Overdue" value={overdueCount} icon-name="utility:warning"></c-ihd-stats-card>
+            <c-ihd-integration-summary-card title="Completion" summary="Overall completion" percent-complete={percentComplete}></c-ihd-integration-summary-card>
+        </div>
+
+        <!-- Quick Add Panel -->
+        <div class="quick-add-section slds-m-bottom_large">
+            <div class="quick-add-row">
+                <lightning-input
+                    type="text"
+                    label="Quick Add"
+                    value={quickText}
+                    onchange={handleQuickTextChange}
+                    placeholder="Add a task (e.g., 'Call John tomorrow at 3pm')"
+                    class="quick-input">
+                </lightning-input>
+                <lightning-button
+                    variant="brand"
+                    label="Add"
+                    onclick={handleQuickCapture}
+                    disabled={isLoading}
+                    class="quick-btn">
+                </lightning-button>
+            </div>
+        </div>
+
+        <!-- Task Board (card grid) -->
+        <div class="task-board">
+            <template lwc:if={hasTasks}>
+                <div class="task-grid">
+                    <template for:each={tasks} for:item="task">
+                        <c-ihd-task-card
+                            key={task.Id}
+                            task={task}
+                            status-options={statusOptions}
+                            onstatuschange={handleTaskStatusChange}
+                            ondelete={handleTaskDelete}>
+                        </c-ihd-task-card>
+                    </template>
+                </div>
+            </template>
+            <template lwc:elseif={error}>
+                <div class="error-message">
+                    <p class="slds-text-color_error">{error}</p>
+                </div>
+            </template>
+            <template lwc:else>
+                <div class="empty-state">
+                    <p>No tasks yet. Add one above to get started!</p>
+                </div>
+            </template>
+        </div>
+
+        <!-- Footer -->
+        <div class="footer">
+            <span>Last updated: </span><span>{formattedLastUpdated}</span>
+        </div>
+    </div>
+</template>

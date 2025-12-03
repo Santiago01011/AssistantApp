@@ -1,0 +1,50 @@
+<template>
+    <div class="task-card">
+        <div class="task-header">
+            <div class="task-title">{task.Name}</div>
+            <lightning-button-icon
+                icon-name="utility:delete"
+                alternative-text="Delete task"
+                title="Delete"
+                data-id={task.Id}
+                onclick={handleDelete}
+                variant="bare"
+                class="task-delete">
+            </lightning-button-icon>
+        </div>
+        <template if:true={task.Description_c}>
+            <div class="task-desc">{task.Description_c}</div>
+        </template>
+        <div class="task-meta">
+            <div class="task-field">
+                <span class="task-label">Due:</span>
+                <lightning-formatted-date-time
+                    value={task.Due_Date_c}
+                    year="numeric"
+                    month="short"
+                    day="2-digit">
+                </lightning-formatted-date-time>
+            </div>
+            <template if:true={task.Context_c}>
+                <div class="task-field">
+                    <span class="task-label">Context:</span>
+                    <span>{task.Context_c}</span>
+                </div>
+            </template>
+        </div>
+        <div class="task-footer">
+            <lightning-combobox
+                data-id={task.Id}
+                value={task.Status_c}
+                options={statusOptions}
+                onchange={handleStatusChange}
+                class="task-status">
+            </lightning-combobox>
+        </div>
+    </div>
+    <template if:true={debug}>
+        <div class="debug-payload">
+            <pre>{_debugJson}</pre>
+        </div>
+    </template>
+</template>
