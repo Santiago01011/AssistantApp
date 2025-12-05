@@ -44,29 +44,34 @@ public with sharing class PAB_AgentService {
         return null;
     }
 
-    public static List<PAB_Task__c> findTasks(String status, String titleKeyword) {
-        String query = 'SELECT Id, Name, Description__c, Status__c, Due_Date__c, Context__c FROM PAB_Task__c';
+    public static List<PAB_Task__c> findTasks(String status, String titleKeyword, Id ownerId) {
+        String query = 'SELECT Id, Name, Title__c, Description__c, Status__c, Energy_Level__c, Start_Date__c, Due_Date__c, Completed_Date__c, Created_By_Agent__c, Context__c, OwnerId FROM PAB_Task__c';
         List<String> clauses = new List<String>();
         Boolean allowDeleted = true;
-
         if (String.isNotBlank(status) && status.equalsIgnoreCase(STATUS_SOFT_DELETED)) {
             allowDeleted = false;
         }
         if (allowDeleted) {
-            clauses.add('Status__c != \'' + String.escapeSingleQuotes(STATUS_SOFT_DELETED) + '\'');
+                clauses.add('Status__c != \'' + String.escapeSingleQuotes(STATUS_SOFT_DELETED) + '\'');
         }
         if (String.isNotBlank(status)) {
             clauses.add('Status__c = \'' + String.escapeSingleQuotes(status) + '\'');
         }
         if (String.isNotBlank(titleKeyword)) {
             String escapedKeyword = String.escapeSingleQuotes(titleKeyword);
-            clauses.add('Name LIKE \'%' + escapedKeyword + '%\'');
+            String likeClause = '(Name LIKE \'%' + escapedKeyword + '%\' OR Title__c LIKE \'%' + escapedKeyword + '%\' OR Context__c LIKE \'%' + escapedKeyword + '%\')';
+            clauses.add(likeClause);
+        }
+
+        // OwnerId filter when provided
+        if (ownerId != null) {
+              clauses.add('OwnerId = \'' + String.escapeSingleQuotes(String.valueOf(ownerId)) + '\'');
         }
 
         if (!clauses.isEmpty()) {
             query += ' WHERE ' + String.join(clauses, ' AND ');
         }
-        query += ' ORDER BY CreatedDate DESC LIMIT 10';
+        query += ' ORDER BY Due_Date__c ASC NULLS LAST, CreatedDate DESC LIMIT 20';
         return Database.query(query);
     }
 

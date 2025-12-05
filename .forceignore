@@ -10,3 +10,8 @@ package.xml
 
 # LWC Jest
 **/__tests__/**
+
+# UI layer - TODO: finalize and deploy separately
+force-app/main/default/applications/PAB_Assistant.app-meta.xml
+force-app/main/default/tabs/PAB_Assistant_Dashboard.tab-meta.xml
+force-app/main/default/lwc/pabAssistantDashboard/

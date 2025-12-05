@@ -1,0 +1,7 @@
+{
+  "title" : "PAB Task Card Created",
+  "description" : "Displays a newly created task card in the agent chat UI",
+  "lightning:type" : "@apexClassType/c__PAB_AgentCreateTask$AvaiableUserTasks"
+}
+
+

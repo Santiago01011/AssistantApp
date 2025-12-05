@@ -5,7 +5,4 @@
     <targets>
         <target>lightning__AgentforceOutput</target>
     </targets>
-    <capabilities>
-        <capability>lightning__ServerRenderable</capability>
-    </capabilities>
 </LightningComponentBundle>

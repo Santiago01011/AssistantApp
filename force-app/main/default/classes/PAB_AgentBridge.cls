@@ -9,7 +9,7 @@ public with sharing class PAB_AgentBridge {
             Date targetDate = Date.today();
             if (lower.contains('tomorrow')) targetDate = Date.today().addDays(1);
 
-            List<PAB_Task__c> allTasks = PAB_AgentService.findTasks(null, null);
+            List<PAB_Task__c> allTasks = PAB_AgentService.findTasks(null, null, UserInfo.getUserId());
             List<PAB_Task__c> filtered = new List<PAB_Task__c>();
             for (PAB_Task__c t : allTasks) {
                 if (t.Due_Date__c != null) {

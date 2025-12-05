@@ -1,0 +1,35 @@
+<template>
+    <div class="slds-box slds-theme_default">
+        <div class="slds-p-bottom_medium">
+            <lightning-input
+                type="search"
+                label="Search Tasks"
+                variant="label-hidden"
+                placeholder="Search by title or description..."
+                onchange={handleSearchChange}
+            ></lightning-input>
+        </div>
+
+        <template if:true={hasTasks}>
+            <!-- SLDS Grid container -->
+            <div class="slds-grid slds-wrap slds-gutters">
+                <template for:each={cardEntries} for:item="entry">
+                    <!-- Responsive column for each card -->
+                    <div key={entry.key} class="slds-col slds-size_1-of-1 slds-p-bottom_small">
+                        <c-ihd-task-card value={entry.payload}></c-ihd-task-card>
+                    </div>
+                </template>
+            </div>
+        </template>
+
+        <template if:false={hasTasks}>
+            <div class="slds-text-align_center slds-m-vertical_large">
+                <p>No tasks found.</p>
+            </div>
+        </template>
+    </div>
+    <!-- debug label with version hardcoded -->
+    <div class="slds-text-align_center slds-m-top_medium slds-text-color_weak slds-text-body_small">
+        <p>pabAgentTaskList v1.2.3</p>
+    </div>
+</template>

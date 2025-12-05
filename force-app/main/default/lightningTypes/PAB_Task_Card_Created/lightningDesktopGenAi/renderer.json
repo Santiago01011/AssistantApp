@@ -1,0 +1,19 @@
+{
+  "renderer" : {
+    "componentOverrides" : {
+      "$" : {
+        "definition" : "c/pabAgentTaskList"
+      }
+    }
+  },
+  "collection" : {
+    "renderer" : {
+      "componentOverrides" : {
+        "$" : {
+          "definition" : "c/pabAgentTaskList"
+        }
+      }
+    }
+  }
+}
+

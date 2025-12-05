@@ -1,0 +1,5 @@
+{
+  "title" : "PAB Task List",
+  "description" : "Displays a list of tasks provided by the agent in the chat UI",
+  "lightning:type" : "@apexClassType/c__PAB_AgentFindTask$AvaiableUserTasks"
+}

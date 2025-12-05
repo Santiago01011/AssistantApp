@@ -1,5 +1,0 @@
-{
-  "title": "Task Card",
-  "description": "A rich card view for tasks",
-  "lightning:type": "@apexClassType/c__PAB_AgentFindTask$TaskCardWrapper"
-}
