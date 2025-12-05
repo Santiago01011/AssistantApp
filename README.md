@@ -83,10 +83,3 @@ Paste images here to show the UI and behavior. Example Markdown image placeholde
 
 ---
 
-## Testing & validation
-
-- Use small Apex test classes that call the invocable methods (`PAB_AgentFindTask` / `PAB_AgentCreateTask`) and assert the returned wrapper shapes.
-- Run `sfdx force:source:deploy` or `sfdx force:source:push` and then verify in the org using the Agentforce chat UI.
-
----
-
